@@ -1,6 +1,5 @@
-/* eslint-disable indent */
-const { BN, Long, bytes, units } = require('@zilliqa-js/util');
-const { Zilliqa } = require('@zilliqa-js/zilliqa');
+const {BN, Long, bytes, units} = require('@zilliqa-js/util');
+const {Zilliqa} = require('@zilliqa-js/zilliqa');
 const {
     toBech32Address,
     getAddressFromPrivateKey,
@@ -26,14 +25,8 @@ async function main() {
     try {
         const contract = zilliqa.contracts.at(nftAddr);
         const callTx = await contract.callWithoutConfirm(
-            'configureMinter',
-            [
-                {
-                    vname: 'minter',
-                    type: 'ByStr20',
-                    value: '0x7bb3b0e8a59f3f61d9bff038f4aeb42cae2ecce8',
-                },
-            ],
+            'symbol',
+            [],
             {
                 // amount, gasPrice and gasLimit must be explicitly provided
                 version: VERSION,

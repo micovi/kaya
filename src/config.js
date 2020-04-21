@@ -24,8 +24,8 @@ const packagejs = require('../package.json');
 module.exports = {
   port: 4200,
   version: packagejs.version,
-  dataPath: '../data/',
-  savedFilesDir: '../saved/',
+  dataPath: './kaya-data/',
+  savedFilesDir: './kaya-saved/',
   chainId: 111,
   msgVersion: 1,
   // blockchain specific configuration
