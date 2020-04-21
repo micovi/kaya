@@ -9,7 +9,7 @@
     "start": "node src/server.js",
     "start:fixtures": "node src/server.js --f test/account-fixtures.json",
     "debug": "node src/server.js -v",
-    "debug:fixtures": "node src/server.js -f test/account-fixtures.json -v"
+    "debug:fixtures": "node src/server.js -f test/account-fixtures.json -v -d ./data-test/"
   },
   "author": "Edison Lim",
   "license": "GPL-3.0-or-later",

@@ -214,7 +214,7 @@ module.exports = {
 
         if (!walletCtrl.sufficientFunds(senderAddress, bnAmountRequiredForTx)) {
           logVerbose(logLabel, 'Insufficient funds. Returning error to client.');
-          throw new BalanceError('Insufficient balance to process transction');
+          throw new BalanceError('Insufficient balance to process transaction');
         }
 
         logVerbose(logLabel, 'Running scilla interpreter now');
@@ -439,8 +439,31 @@ module.exports = {
     responseData = JSON.parse(responseData);
 
     if (fileType === 'state') {
-      result = {};
-      responseData.forEach(field => result[field.vname] = field.value);
+      // Change array to object on state, bug on scilla-runner
+      let result = {};
+
+      responseData.forEach((field) => {
+        console.log("-----RP-----");
+        console.log("-----RP-----");
+        console.log(field.value);
+        console.log("-----RP-----");
+        console.log("-----RP-----");
+
+        result[field.vname] = {};
+
+        // Workaround to replace scilla-runner responses
+        if (Array.isArray(field.value)) {
+          console.log('isArray');
+          field.value.forEach((item) => {
+            result[field.vname][item.key] = item.val;
+          });
+          console.log(result[field.vname]);
+        } else if (field.value.length) {
+          result[field.vname] = field.value;
+        }
+      });
+
+      // responseData.forEach(field => result[field.vname] = field.value);
       return result;
     }
     return responseData;

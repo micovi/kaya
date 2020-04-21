@@ -65,8 +65,8 @@ Settings for the scilla interpreter
 */
   scilla: {
     remote: true,
-    CHECKER_URL: 'https://scilla-runner.zilliqa.com/contract/check',
-    RUNNER_URL: 'https://scilla-runner.zilliqa.com/contract/call',
+    CHECKER_URL: 'https://scilla-server.zilliqa.com/contract/check',
+    RUNNER_URL: 'https://scilla-server.zilliqa.com/contract/call',
   },
 
   testconfigs: {
