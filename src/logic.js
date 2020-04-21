@@ -396,7 +396,12 @@ module.exports = {
    * @param { String } type - enum of either data, init or state
    */
   processGetDataFromContract: (data, dataPath, type) => {
-    const fileType = type.trim().toLowerCase();
+    let fileType = type.trim().toLowerCase();
+
+    // Define substate variables
+    const realQuery = fileType;
+    if (fileType === 'substate') fileType = 'state';
+
     if (!['init', 'state', 'code'].includes(fileType)) {
       const err = new RPCError(
         'INVALID_PARAMS: Invalid method parameters (invalid name and/or type) recognised: Invalid options flag',
@@ -405,8 +410,9 @@ module.exports = {
       );
       throw err;
     }
+
     const ext = fileType === 'code' ? 'scilla' : 'json';
-    logVerbose(logLabel, `Getting SmartContract ${fileType}`);
+    logVerbose(logLabel, `Getting SmartContract ${realQuery}`);
 
     if (!data) {
       logVerbose(logLabel, 'Invalid params');
@@ -433,34 +439,69 @@ module.exports = {
     }
 
     let responseData = fs.readFileSync(filePath, 'utf-8');
-    if (fileType === 'code') {
-      return { code: responseData };
+
+    let result = {};
+
+    switch (realQuery) {
+      case 'code':
+        result = { code: responseData };
+        break;
+      case 'state':
+        responseData = JSON.parse(responseData);
+
+        // Change array to object on state, bug on scilla-runner maybe?
+        responseData.forEach((field) => {
+          result[field.vname] = {};
+
+          // Workaround to replace scilla-runner responses
+          if (Array.isArray(field.value)) {
+            field.value.forEach((item) => {
+              result[field.vname][item.key] = item.val;
+            });
+          } else if (field.value.length) {
+            result[field.vname] = field.value;
+          }
+        });
+        break;
+      case 'substate':
+        responseData = JSON.parse(responseData);
+
+        // eslint-disable-next-line no-case-declarations
+        const state = {};
+        // eslint-disable-next-line no-case-declarations
+        const variableName = data[1]; // Name of the variable in the Smart Contract
+        // eslint-disable-next-line no-case-declarations
+        const indicesArray = data[2]; // you can specify an index (or indices) for variableName
+
+        // Change array to object on state, bug on scilla-runner maybe?
+        responseData.forEach((field) => {
+          if (field.vname === variableName) {
+            state[field.vname] = {};
+            // Workaround to replace scilla-runner responses
+            if (Array.isArray(field.value)) {
+              field.value.forEach((item) => {
+                if (indicesArray.length) {
+                  if (indicesArray.includes(item.key)) {
+                    state[field.vname][item.key] = item.val;
+                  }
+                } else {
+                  state[field.vname][item.key] = item.val;
+                }
+              });
+            } else if (field.value.length) {
+              state[field.vname] = field.value;
+            }
+          }
+        });
+
+        result = { ...state };
+        break;
+      default:
+        result = responseData;
+        break;
     }
-    responseData = JSON.parse(responseData);
 
-    if (fileType === 'state') {
-      // Change array to object on state, bug on scilla-runner
-      const result = {};
-
-      responseData.forEach((field) => {
-        result[field.vname] = {};
-
-        // Workaround to replace scilla-runner responses
-        if (Array.isArray(field.value)) {
-          console.log('isArray');
-          field.value.forEach((item) => {
-            result[field.vname][item.key] = item.val;
-          });
-          console.log(result[field.vname]);
-        } else if (field.value.length) {
-          result[field.vname] = field.value;
-        }
-      });
-
-      // responseData.forEach(field => result[field.vname] = field.value);
-      return result;
-    }
-    return responseData;
+    return result;
   },
 
   /**

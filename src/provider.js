@@ -66,6 +66,8 @@ class Provider {
         return logic.processGetDataFromContract(params, this.options.dataPath, 'code');
       case 'GetSmartContractState':
         return logic.processGetDataFromContract(params, this.options.dataPath, 'state');
+      case 'GetSmartContractSubState':
+        return logic.processGetDataFromContract(params, this.options.dataPath, 'substate');
       case 'GetSmartContractInit':
         return logic.processGetDataFromContract(params, this.options.dataPath, 'init');
       case 'GetSmartContracts':
