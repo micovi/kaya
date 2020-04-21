@@ -443,12 +443,6 @@ module.exports = {
       let result = {};
 
       responseData.forEach((field) => {
-        console.log("-----RP-----");
-        console.log("-----RP-----");
-        console.log(field.value);
-        console.log("-----RP-----");
-        console.log("-----RP-----");
-
         result[field.vname] = {};
 
         // Workaround to replace scilla-runner responses
