@@ -350,7 +350,7 @@ module.exports = {
    */
 
   processGetTransaction: (data) => {
-    if (!data) {
+    if (!data || data.length === 0) {
       logVerbose(logLabel, 'Invalid params');
       const err = new RPCError(
         'INVALID_PARAMS: Invalid method parameters (invalid name and/or type) recognised: Size not appropriate',
@@ -366,7 +366,7 @@ module.exports = {
       return res;
     }
     const err = new RPCError(
-      'INVALID_PARAMS: Invalid method parameters (invalid name and/or type) recognised: Size not appropriate',
+      'Txn Hash not Present',
       errorCodes.RPC_DATABASE_ERROR,
       null,
     );
