@@ -440,7 +440,7 @@ module.exports = {
 
     if (fileType === 'state') {
       // Change array to object on state, bug on scilla-runner
-      let result = {};
+      const result = {};
 
       responseData.forEach((field) => {
         result[field.vname] = {};
