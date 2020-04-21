@@ -15,11 +15,11 @@ zilliqa.wallet.addByPrivateKey(
 
 async function testBlockchain() {
   try {
-    // Send a transaction to the network
+/*     // Send a transaction to the network
     const tx = await zilliqa.blockchain.createTransaction(
       zilliqa.transactions.new({
         version: VERSION,
-        toAddr: 'd90f2e538ce0df89c8273cad3b63ec44a3c4ed82',
+        toAddr: '0x7bb3b0e8a59f3f61d9bff038f4aeb42cae2ecce8',
         amount: new BN(888),
         // gasPrice must be >= minGasPrice
         gasPrice: new BN('1_000_000_000'),
@@ -27,7 +27,7 @@ async function testBlockchain() {
         gasLimit: Long.fromNumber(10),
       }),
     );
-    console.log(tx);
+    console.log(tx); */
 
     console.log('Deploying a contract now');
     // Deploy a contract
@@ -61,22 +61,17 @@ async function testBlockchain() {
     console.log('Deployment Transaction ID: ', deployTx.id);
     console.log('Deployment Transaction Receipt: ', deployTx.txParams.receipt);
 
-    const callTx = await hello.call('setHello', [
-      {
-        vname: 'msg',
-        type: 'String',
-        value: 'Hello World',
-      }],
+    const callTx2 = await hello.call('multipleMsgs', [],
     {
       version: VERSION,
       amount: new BN(0),
       gasPrice: new BN('1_000_000_000'),
       gasLimit: Long.fromNumber(5000),
     });
-    const { receipt } = callTx.txParams;
-    console.log(receipt);
-    const state = await hello.getState();
-    console.log(state);
+    const { receipt2 } = callTx2.txParams;
+    console.log(receipt2);
+    const state2 = await hello.getState();
+    console.log(state2);
   } catch (err) {
     console.log('Blockchain Error');
     console.log(err);

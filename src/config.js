@@ -55,6 +55,9 @@ module.exports = {
       SCILLA_CHECKER: `${__dirname}/components/scilla/scilla-checker`,
       SCILLA_LIB: `${__dirname}/components/scilla/stdlib`,
     },
+    transactions: {
+      MAX_CONTRACT_EDGES: 10,
+    },
   },
 
   /*
@@ -63,10 +66,15 @@ Settings for the scilla interpreter
 - remote: Use the remote scilla interpreter. (Default: True). False: Use local scilla interpreter
 - url: URL to the remote scilla interpreter
 */
-  scilla: {
+  /* scilla: {
     remote: true,
     CHECKER_URL: 'https://scilla-server.zilliqa.com/contract/check',
     RUNNER_URL: 'https://scilla-server.zilliqa.com/contract/call',
+  }, */
+  scilla: {
+    remote: true,
+    CHECKER_URL: 'http://localhost:4000/contract/check',
+    RUNNER_URL: 'http://localhost:4000/contract/call',
   },
 
   testconfigs: {

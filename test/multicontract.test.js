@@ -1,11 +1,11 @@
 const { readFileSync } = require('fs');
 const { BN, bytes, Long } = require('@zilliqa-js/util');
 const { Zilliqa } = require('@zilliqa-js/zilliqa');
-const { toChecksumAddress, getAddressFromPrivateKey, getPubKeyFromPrivateKey } = require('@zilliqa-js/crypto');
+const { getAddressFromPrivateKey, getPubKeyFromPrivateKey } = require('@zilliqa-js/crypto');
 const KayaProvider = require('../src/provider');
 const { loadAccounts } = require('../src/components/wallet/wallet');
 
-const privateKey =  'ebe9139f853d3ba3f509741d3068ccae5215793ed82b0dcf982dd38462a7ab7e'
+const privateKey = 'ebe9139f853d3ba3f509741d3068ccae5215793ed82b0dcf982dd38462a7ab7e';
 
 const testWallet = {
   address: getAddressFromPrivateKey(privateKey),
@@ -115,8 +115,8 @@ describe('Test Multicontract support', () => {
       ])
     );
     expect(walletBalance.result.nonce).toBe(4);
-    expect(contractAState).toEqual({_balance: '0', last_amount: '5'});
-    expect(contractBState).toEqual({_balance: '0', last_amount: '5'})
-    expect(contractCState).toEqual({_balance: '5', last_amount: '5'})
+    expect(contractAState).toEqual({ _balance: '0', last_amount: '5' });
+    expect(contractBState).toEqual({ _balance: '0', last_amount: '5' });
+    expect(contractCState).toEqual({ _balance: '5', last_amount: '5' });
   });
 });

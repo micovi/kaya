@@ -338,7 +338,7 @@ module.exports = {
         address: payload.toAddr,
       }));
     }
-    const message = retMsg.message;
+    /* const message = retMsg.message;
     if (message != null) {
       responseData.message = message;
 
@@ -348,7 +348,8 @@ module.exports = {
     } else {
       // Contract deployment do not have the next address
       responseData.nextAddress = '0'.repeat(40);
-    }
+    } */
+    responseData.messages = retMsg.message ? [retMsg.message] : retMsg.messages || [];
     return responseData;
   },
 };
